@@ -68,7 +68,7 @@ function docbleach.clean_local(basename, file, filestat)
 
     local out_file = "/tmp/" .. luci.sys.uniqueid(10) .. "_" .. basename
 
-    local output, exit_code = usbleach.run(string.format("/usr/bin/docbleach/Main -batch -in - -out %q 2>&1 < %q", out_file, file))
+    local output, exit_code = usbleach.run(string.format("/usr/bin/docbleach/Main -in - -out %q 2>&1 < %q", out_file, file))
     nixio.fs.chown(out_file, 770)
     return exit_code, out_file, output
 end
