@@ -1,0 +1,79 @@
+#!/bin/ash
+
+# We source the functions (uci, ...)
+. /lib/functions.sh
+
+# Options
+YARA_RULES=/usr/share/yara-rules
+TMP_DIR=/tmp/usbleach
+USBLEACH_INDEX_DIR=/var/run/usbleach/mount-for-dev
+
+# Just in case.
+mkdir -p ${USBLEACH_INDEX_DIR}
+mkdir -p ${TMP_DIR}
+
+# Sample environment: (front end, only one with UBS3)
+#DEVNAME=sda1
+#USER=root
+#ACTION=add
+#SHLVL=2
+#HOTPLUG_TYPE=block
+#MAJOR=8
+#DEVPATH=/devices/pci0000:00/0000:00:14.0/usb1/1-1/1-1:1.0/host2/target2:0:0/2:0:0:0/block/sda/sda1
+#DEVICENAME=sda1
+#SUBSYSTEM=block
+#MINOR=1
+#DEVTYPE=partition
+
+# Plugged backend
+# upper port: DEVPATH=/devices/pci0000:00/0000:00:14.0/usb1/1-2/1-2:1.0/host5/target5:0:0/5:0:0:0/block/sda/sda1
+
+# Functions
+yara_scan () {
+  yara -w -r -f -g "$1" . 2>&1
+}
+
+[ "$ACTION" = add ] || [ "$ACTION" = remove ] || exit 0
+[ "$DEVTYPE" = partition ] || exit 0
+
+echo "$DEVPATH" | grep -q "/usb" || exit 0
+# Small hack to detect if the string contains "/usb", without bash
+
+if [ "$ACTION" = add ]
+then
+  # We want to umount even if usbleach is disabled while mounted
+  # => we have to use this small hack
+  [ "$(uci get usbleach.main.enabled)" == "on" ] || exit 0
+
+  mkdir -p "$TMP_DIR/$DEVICENAME/mnt/"
+  mount_dir=$(mktemp -d -p "$TMP_DIR/$DEVICENAME/mnt/")
+  echo "$mount_dir/" > "$USBLEACH_INDEX_DIR/$DEVICENAME"
+  logger -i -p info -t usbleach "[`date`] Plugged $DEVICENAME ($MAJOR, $MINOR), mounted on '$mount_dir'"
+  mount -t auto -o noexec "/dev/$DEVICENAME" "$mount_dir"
+
+  if  [ "$(uci get usbleach.main.yarascan)" == "on" ]
+  then
+    logger -i -p info -t usbleach "Starting yara scan for $DEVICENAME"
+    # PRE-MADE YARA SCAN
+    touch "$TMP_DIR/$DEVICENAME/yara_processing"
+    (
+      cd "$mount_dir" || exit -1;
+      yara_scan "$YARA_RULES/Malicious_Documents_index.yar" >> "$TMP_DIR/$DEVICENAME/yara";
+      yara_scan "$YARA_RULES/malware_index.yar" >> "$TMP_DIR/$DEVICENAME/yara";
+    )
+    rm "$TMP_DIR/$DEVICENAME/yara_processing"
+    logger -i -p info -t usbleach "Yara scan ended for $DEVICENAME"
+  else
+    touch "$TMP_DIR/$DEVICENAME/yara_disabled"
+  fi
+elif [ "$ACTION" = remove ]
+then
+  if [ -f "$USBLEACH_INDEX_DIR/$DEVICENAME" ]
+  then
+    umount "$(cat "$USBLEACH_INDEX_DIR/$DEVICENAME")"
+    rm -rf "$TMP_DIR/$DEVICENAME/"
+    rm "$USBLEACH_INDEX_DIR/$DEVICENAME"
+    rm -rf /www/usbleach/${DEVICENAME}
+    logger -i -p info -t usbleach "[`date`] Unplugged $DEVICENAME ($MAJOR, $MINOR)"
+  fi
+fi

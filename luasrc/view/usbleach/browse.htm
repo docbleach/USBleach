@@ -1,0 +1,93 @@
+<%+usbleach/header%>
+<h2 id="content">USBleach - <%=device%> - <%=label%></h2>
+<%
+local navigation_links = "<a href='"..url("admin", "usbleach", "browse", device).."'>/</a>"
+local cur_path = ""
+for i, _ in pairs(path) do
+cur_path = cur_path ..'/'.. _
+p = _
+if i > 1 then p = '/' .. _ end
+link = url("admin", "usbleach", "browse", device, cur_path)
+navigation_links = navigation_links .. '<a href="'..link..'">'..p..'</a>'
+end
+%>
+<h6>Chemin: <%=navigation_links%></h6>
+
+<%# We display all directories, then all files %>
+<table class="filebrowser">
+    <thead>
+    <tr>
+        <th></th>
+        <th>Path</th>
+        <td></td>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <% if relative_filepath ~= "/" then %>
+    <tr class="dir">
+        <td class=""><img src="<%=resource%>/cbi/folder.gif" alt="<%:Directory%>"/></td>
+        <td><a href="<%=baseurl%>..">../</a></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <% end %>
+
+    <%
+    for _, e in luci.util.vspairs(entries) do
+    local stat = nixio.fs.stat(filepath..e)
+    --~ We compare the deviceid to protect from symlinks
+    --~ This disables symlinks to files on other devices, not local symlinks
+    if stat and stat.dev == deviceid and stat.type == 'dir' then
+    -%>
+    <tr class="dir">
+        <td class=""><img src="<%=resource%>/cbi/folder.gif" alt="<%:Directory%>"/></td>
+        <td><a href="<%=baseurl%><%=e%>"><%=e%>/</a></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <% end end -%>
+    <tr></tr>
+    <%
+    for _, e in luci.util.vspairs(entries) do
+    local stat = nixio.fs.stat(filepath..e)
+    if stat and stat.dev == deviceid and stat.type ~= 'dir' then
+    local flagged = ""
+    if yara_flagged["./"..relative_filepath..e] == 1 then flagged = "danger" end
+    -%>
+    <tr class="file <%=flagged%>" data-file=<%luci.http.write_json(e)%>>
+        <td class=""><img src="<%=resource%>/cbi/file.gif" alt="<%:File%>"/></td>
+        <td class="filename">
+            <% if not usbleach.is_whitelisted(e) then -%><strike><% end %>
+            <span class="<%=flagged%>"><%=e%></span>
+            <% if not usbleach.is_whitelisted(e) then -%></strike><% end %>
+            &nbsp;
+            <% if yara_flagged["./"..relative_filepath..e] == 1 then print("!!") end -%>
+        </td>
+        <td><%= luci.usbleach.prettysize(stat["size"]) -%></td>
+        <td>
+            <% if usbleach.is_whitelisted(e) then -%>
+            <a href="#" onclick='action(<%=luci.http.write_json(url("admin", "usbleach", "action", device))%>, {action: "download", file: <%=luci.http.write_json(relative_filepath..e)%>}); return false;'>
+                <i class="ico-download" aria-hidden="true"></i>
+            </a>
+            <a href="#"
+               onclick='askEmail(function(email) { action(<% luci.http.write_json(url("admin", "usbleach", "action", device)) %>, {action: "email", file: <%=luci.http.write_json(relative_filepath..e)%>, email: email})}); return false;'
+               title="Receive by email">
+                <i class="ico-mail" aria-hidden="true"></i>
+            </a>
+            <% else -%>
+            Extension is not whitelisted.
+            <% end -%>
+        </td>
+    </tr>
+    <% end end -%>
+</table>
+<hr>
+<form>
+    <input id="mkdir" value="Create a directory" class="cbi-button" type="button">
+    <input id="upfile" value="Add a file" class="cbi-button" type="button">
+</form>
+<script>
+    var mkdirEndpoint = <% luci.http.write_json(url("admin", "usbleach", "mkdir", device, relative_filepath)) %>;
+    var upfileEndpoint = <% luci.http.write_json(url("admin", "usbleach", "upfile", device, relative_filepath)) %>;
+</script>
+<%+usbleach/footer%>

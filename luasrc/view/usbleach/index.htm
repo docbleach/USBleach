@@ -1,0 +1,21 @@
+<%+usbleach/header%>
+<h2 name="content">USBleach</h2>
+<p>
+    Welcome on USBleach's home.<br>
+    From here you are able to list the plugged in USB devices. You will then be able to browse a disk's files, and
+    depending on your configuration you might be able to retrieve files.
+    <% if usbleach.is_module_available("luci.usbleach.modules.docbleach") then %>
+    <br>You may also sanitize office documents using <a href='<%=url("admin", "usbleach", "docbleach")%>'>DocBleach</a>.
+    <% end %>
+</p>
+<p>
+    <br> Nobody, except you, is able to use your files: they are not stored in the cloud, and your connection must be
+    secured (<code>https://</code>).
+</p>
+
+<h3>USB Devices</h3>
+<ul class="tree" id="myChristmasTree">
+    <%= myMounts %>
+</ul>
+<hr>
+<%+usbleach/footer%>

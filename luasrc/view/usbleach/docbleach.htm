@@ -1,0 +1,15 @@
+<%+usbleach/header%>
+<h2 name="content">DocBleach</h2>
+
+<form id="uploadForm" method="post" action="<%=REQUEST_URI%>" enctype="multipart/form-data">
+    <div class="upload-description">
+        Sanitizes a potentially dangerous file (Office Document, PDF), by removing macros and other active contents.
+    </div>
+    <br><br>
+    <input type="file" name="file" id="file" class="inputfile" accept=".doc,.dot,.wbk,.docx,.docm,.dotm,.dotx,.docb,.xls,.xlt,.xlm,.xlsx,.xlsm,.xltx,.xltm,.xlsb,.xla,.xlam,.xll,.xlw,.ppt,.pot,.pps,.pptx,.pptm,.ppam,.potx,.potx,.ppsx,.ppsm,.sldx,.sldm,.pub"/>
+    <label for="file">
+        <img src="<%=resource%>/usbleach/upload_ico.svg"/>
+        <span>Pick a file&hellip;</span></label>
+    <input type="submit" name="subButton" id="subButton" value="submit">
+</form>
+<%+usbleach/footer%>

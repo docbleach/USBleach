@@ -1,0 +1,11 @@
+<%+usbleach/header%>
+<h2 name="content">USBleach</h2>
+<h3>Error!</h3>
+<p>You are not allowed to browse <b><%= device %></b>'s files as another user is already using it.</p>
+<script>
+    // We auto refresh this page because we want the data on it to be up2date :)
+    setTimeout(function () {
+        location.reload(true)
+    }, 5 * 1000);
+</script>
+<%+usbleach/footer%>

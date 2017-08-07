@@ -1,0 +1,108 @@
+.docbleach_severe {
+    color: darkred;
+    font-weight: 600;
+}
+
+.docbleach_warning {
+    color: red;
+}
+
+.docbleach_info {
+    color: #0091D7;
+}
+/* Used by docbleach's drop zone */
+
+.js .inputfile,
+.js #subButton {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+}
+
+.inputfile + label {
+    max-width: 80%;
+    font-size: 1.25rem;
+    font-weight: 700;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    cursor: pointer;
+    display: inline-block;
+    overflow: hidden;
+    padding: 0.625rem 1.25rem;
+}
+
+.inputfile + label {
+    color: #f1e5e6;
+    background-color: #d3394c;
+}
+
+.inputfile:focus + label,
+.inputfile.has-focus + label,
+.inputfile + label:hover {
+    background-color: #722040;
+}
+
+.filebrowser tr td:first-child {
+    width: 24px;
+    text-align: center;
+}
+
+.filebrowser th,
+.filebrowser td {
+    padding: 1px 1px 3px;
+    line-height: 12px;
+    text-align: left;
+}
+
+table.filebrowser,
+.filebrowser td,
+.filebrowser th,
+.filebrowser tr {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    border-collapse: collapse;
+}
+
+.filebrowser .danger .filename {
+    color: rgba(255, 0, 0, 0.6);
+}
+
+ul.tree, ul.tree ul {
+    list-style-type: none;
+    background: #fff url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAKAQMAAABPHKYJAAAAA1BMVEWIiIhYZW6zAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH1ggGExMZBky19AAAAAtJREFUCNdjYMAEAAAUAAHlhrBKAAAAAElFTkSuQmCC') repeat-y;
+    margin: 0;
+    padding: 0;
+}
+
+ul.tree ul {
+    margin-left: 10px;
+}
+
+ul.tree li {
+    margin: 0;
+    padding: 0 12px;
+    line-height: 20px;
+    background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAUAQMAAACK1e4oAAAABlBMVEUAAwCIiIgd2JB2AAAAAXRSTlMAQObYZgAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9YIBhQIJYVaFGwAAAARSURBVAjXY2hgQIf/GTDFGgDSkwqATqpCHAAAAABJRU5ErkJggg==') no-repeat;
+}
+
+ul.tree li:last-child {
+    background: #fff url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAUAQMAAACK1e4oAAAABlBMVEUAAwCIiIgd2JB2AAAAAXRSTlMAQObYZgAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9YIBhQIIhs+gc8AAAAQSURBVAjXY2hgQIf/GbAAAKCTBYBUjWvCAAAAAElFTkSuQmCC') no-repeat;
+}
+
+li[class^="usbleach_class_"] {
+    color: #000;
+}
+
+li.usbleach_class_09, li.usbleach_class_00 {
+    color: #777;
+}
+
+li.usbleach_class_08, li.usbleach_class_00.usbleach_subclass_00 span, li.usbleach_class_00.usbleach_subclass_00 ul {
+    color: #000;
+}
+
+li.usbleach_class_03 {
+    color: #F00;
+}
