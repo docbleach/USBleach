@@ -26,7 +26,7 @@ We considered multiple attacks using USB keys, not all of them are in the scope 
 - Mass Storage: we detect bad files and we either sanitize them when we can, or we prevent them from being used.
 - Everything else is _assumed_ safe enough to be used on your desktop, but plugging anything else than an USB stick with warn you.
 
-Using this scheme, Rubber Ducky and BadUSB are blocked: if they "look like" USB keys but are not, you know something is odd.
+Using this scheme, [Bash Bunny](https://shop.hak5.org/products/bash-bunny), [Rubber Ducky](https://shop.hak5.org/products/usb-rubber-ducky-deluxe), [O.MG Cable](https://mg.lol/blog/omg-cable/) and [BadUSB](https://www.youtube.com/watch?v=nuruzFqMgIw) are blocked: if they "look like" USB keys but are not, you know something is odd.
 
 
 # Installation
