@@ -22,8 +22,8 @@ file sharing feature, without the flaws_.
 
 We considered multiple attacks using USB keys, not all of them are in the scope of this project:
 
-- Physical threats (USB Killer): depends on your hardware, can't be done with soft.
-- Mass Storage: we detect bad files and we either sanitize them when we can, or we prevent them from being used.
+- [Physical threats](https://usbkill.com/): depends on your hardware, can't be done with soft.
+- [Mass Storage](https://en.wikipedia.org/wiki/USB_mass_storage_device_class): we detect bad files and we either sanitize them when we can, or we prevent them from being used.
 - Everything else is _assumed_ safe enough to be used on your desktop, but plugging anything else than an USB stick with warn you.
 
 Using this scheme, [Bash Bunny](https://shop.hak5.org/products/bash-bunny), [Rubber Ducky](https://shop.hak5.org/products/usb-rubber-ducky-deluxe), [O.MG Cable](https://mg.lol/blog/omg-cable/) and [BadUSB](https://www.youtube.com/watch?v=nuruzFqMgIw) are blocked: if they "look like" USB keys but are not, you know something is odd.
