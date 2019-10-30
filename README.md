@@ -13,7 +13,7 @@ Three options are available to you:
 
 - (BAD) plug the stick on your desk, bypassing the policies
 - (GOOD) give the stick to your IT department so that they can sanitize it
-- (BETTER) plug it into an OpenWRT sandbox with USBleach, use your web browser to pickup files
+- (BETTER) plug it into an OpenWRT sandbox with USBleach, use your web browser to pick-up the files
 
 # USBleach's objectives
 
@@ -24,7 +24,7 @@ We considered multiple attacks using USB keys, not all of them are in the scope 
 
 - Physical threats (USB Killer): depends on your hardware, can't be done with soft.
 - Mass Storage: we detect bad files and we either sanitize them when we can, or we prevent them from being used.
-- Everything else is _assumed_ safe enough to be used on your desktop, but plugging anything else than an USB stick with warn you.
+- Everything else is _assumed_ safe enough to be used on your desktop, but plugging anything else than a USB stick will warn you.
 
 Using this scheme, [Bash Bunny](https://shop.hak5.org/products/bash-bunny), [Rubber Ducky](https://shop.hak5.org/products/usb-rubber-ducky-deluxe), [O.MG Cable](https://mg.lol/blog/omg-cable/) and [BadUSB](https://www.youtube.com/watch?v=nuruzFqMgIw) are blocked: if they "look like" USB keys but are not, you know something is odd.
 
@@ -56,7 +56,7 @@ $ opkg install usbleach_0.6-1_all.ipk
     # Start hacking
 ```
 
-You have developed a new cool feature ? Fixed an annoying bug ?
+You have developed a cool new feature ? Fixed an annoying bug ?
 We would be happy to hear from you !
 
 
